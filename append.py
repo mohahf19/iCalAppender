@@ -60,6 +60,7 @@ if email is not None:
 with open(input_path, encoding="UTF-8") as file:
     cal = Calendar.from_ical(file.read())
     events = [item for item in cal.walk() if item.name == "VEVENT"]
+    print(f"There are {len(events)} events in this calendar")
     new_events = [add_emails_to_event(emails, event) for event in events]
     if weekly_date is not None:
         new_events = [add_weekly_repetition(weekly_date, event) for event in new_events]
