@@ -29,7 +29,8 @@ python append.py --help
 
 ## Usage
 
-```usage: append.py [-h] --input INPUT [--email EMAIL]
+```
+append.py [-h] --input INPUT [--email EMAIL]
                  [--emails EMAILS [EMAILS ...]]
                  [--weekly WEEKLY]
 ```
