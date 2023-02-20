@@ -1,7 +1,8 @@
 import argparse
 import pathlib
+from datetime import date
 
-from icalendar import Calendar, Event
+from icalendar import Calendar, Event, vCalAddress
 
 parser = argparse.ArgumentParser(description="Appends details to iCal (ics) files")
 
@@ -24,10 +25,31 @@ parser.add_argument(
     nargs="+",
 )
 
+parser.add_argument(
+    "--weekly",
+    required=False,
+    help="Date (in iso format) for which all the events will repeat weekly",
+)
+
+
+def add_emails_to_event(emails: list[str], event: Event):
+    for email in emails:
+        attendee = vCalAddress(f"MAILTO:{email}")
+        event.add("attendee", attendee, encode=0)
+    return event
+
+
+def add_weekly_repetition(until: str, event: Event):
+    date_dt = date.fromisoformat(until)
+    event.add("RRULE", {"UNTIL": date_dt, "FREQ": "WEEKLY", "WKST": "MO"})
+
+
 args = parser.parse_args()
 input_path = pathlib.Path(args.input)
 email = args.email
 emails = args.emails
+weekly_date = args.weekly
+
 
 if emails is None:
     emails = []
@@ -35,6 +57,17 @@ if emails is None:
 if email is not None:
     emails.append(email)
 
-with open(input_path) as file:
+with open(input_path, encoding="UTF-8") as file:
     cal = Calendar.from_ical(file.read())
-    print(cal)
+    events = [item for item in cal.walk() if item.name == "VEVENT"]
+    new_events = [add_emails_to_event(emails, event) for event in events]
+    if weekly_date is not None:
+        new_events = [add_weekly_repetition(weekly_date, event) for event in new_events]
+
+output_path = pathlib.Path.joinpath(
+    input_path.with_suffix(""), "_out", input_path.suffix
+)
+output_path = input_path.parent / (input_path.stem + "_out" + input_path.suffix)
+
+with open(output_path, "wb") as file:
+    file.write(cal.to_ical())
