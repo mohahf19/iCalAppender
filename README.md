@@ -30,22 +30,17 @@ python append.py --help
 ## Usage
 
 ```
-append.py [-h] --input INPUT [--email EMAIL]
-                 [--emails EMAILS [EMAILS ...]]
-                 [--weekly WEEKLY]
-```
+usage: append.py [-h] --input INPUT [--email EMAIL] [--emails EMAILS [EMAILS ...]] [--weekly WEEKLY]
 
-## Options
+Appends details to iCal (ics) files
 
-```
+options:
   -h, --help            show this help message and exit
   --input INPUT         Path to an .ics file to process. The output will be at the same path, but with an _out suffix
   --email EMAIL         Email to append to each event in the calendar
   --emails EMAILS [EMAILS ...]
                         List of space-separated emails to append to each event in the calendar
   --weekly WEEKLY       Date (in iso format) for which all the events will repeat weekly
-  --private, --no-private
-                        Whether the event is private or not (default: False)
 ```
 
 ## Motivation Solution
