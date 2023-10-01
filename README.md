@@ -39,16 +39,13 @@ append.py [-h] --input INPUT [--email EMAIL]
 
 ```
   -h, --help            show this help message and exit
-  --input INPUT         Path to an .ics file to process. The
-                        output will be at the same path, but
-                        with an _out suffix
-  --email EMAIL         Email to append to each event in the
-                        calendar
+  --input INPUT         Path to an .ics file to process. The output will be at the same path, but with an _out suffix
+  --email EMAIL         Email to append to each event in the calendar
   --emails EMAILS [EMAILS ...]
-                        List of space-separated emails to
-                        append to each event in the calendar
-  --weekly WEEKLY       Date (in iso format) for which all the
-                        events will repeat weekly
+                        List of space-separated emails to append to each event in the calendar
+  --weekly WEEKLY       Date (in iso format) for which all the events will repeat weekly
+  --private, --no-private
+                        Whether the event is private or not (default: False)
 ```
 
 ## Motivation Solution
@@ -57,6 +54,12 @@ Download your classes as an iCal file from the school's website and delete all t
 
 ```
 python append.py --input <path-to-ics-file> --weekly <last-day-of-semester> --email <work-email>
+```
+
+for example,
+
+```
+python append.py --input horaire-2.ics --weekly 2023-12-22 --email mohamad.fakhouri@company.com --private
 ```
 
 and then add the new calendar to your school calendar. This will send out exactly one email for each class.
